@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Medidor de CPS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    button {
+      padding: 20px 40px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    #cps {
+      font-size: 32px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Teste seu CPS (Cliques por Segundo)</h1>
+  <button id="clickButton">Clique Aqui!</button>
+  <div id="cps">CPS: 0</div>
+
+  <script>
+    let clicks = 0;
+    let startTime = null;
+    let intervalId;
+
+    const button = document.getElementById("clickButton");
+    const cpsDisplay = document.getElementById("cps");
+
+    button.addEventListener("click", () => {
+      if (!startTime) {
+        startTime = Date.now();
+        intervalId = setInterval(updateCPS, 100);
+      }
+
+      clicks++;
+    });
+
+    function updateCPS() {
+      const now = Date.now();
+      const elapsed = (now - startTime) / 1000; // em segundos
+
+      if (elapsed >= 1) {
+        const cps = clicks / elapsed;
+        cpsDisplay.textContent = "CPS: " + cps.toFixed(2);
+
+        // reinicia
+        clearInterval(intervalId);
+        clicks = 0;
+        startTime = null;
+      }
+    }
+  </script>
+</body>
+</html>
